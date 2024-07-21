@@ -1,7 +1,6 @@
 package com.projects147.google_pub_sub.activator;
 
 import com.google.cloud.spring.pubsub.support.BasicAcknowledgeablePubsubMessage;
-import com.projects147.google_pub_sub.constant.Constants;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.integration.annotation.ServiceActivator;
 import org.springframework.messaging.handler.annotation.Header;
@@ -12,8 +11,12 @@ import org.springframework.stereotype.Component;
 @Slf4j
 public class EventMessageActivator {
 
-    @ServiceActivator(inputChannel = Constants.EVENT_CHANNEL_SAMPLE_INPUT_MESSAGE_CHANNEL)
-    public void listenSampleEvents(String payload, @Header(Constants.GCP_PUBSUB_ORIGINAL_MESSAGE)
+    /**
+     * Define what happens to the messages that arrive to
+     * message channel - sampleInputMessageChannel
+     */
+    @ServiceActivator(inputChannel = "sampleInputMessageChannel")
+    public void listenSampleEvents(String payload, @Header("gcp_pubsub_original_message")
     BasicAcknowledgeablePubsubMessage message) {
         log.info("message: {}", message);
         log.info("payload: {}", payload);

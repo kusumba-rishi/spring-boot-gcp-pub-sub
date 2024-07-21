@@ -9,14 +9,16 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.integration.channel.PublishSubscribeChannel;
 import org.springframework.messaging.MessageChannel;
 
-import static com.projects147.google_pub_sub.constant.Constants.EVENT_CHANNEL_SAMPLE_INPUT_MESSAGE_CHANNEL;
-
 @Configuration
 public class PubSubEventConfiguration {
 
+    /**
+     * Create an inbound channel adapter to listen to the subscription
+     * and send the messages to message channel
+     */
     @Bean
     public PubSubInboundChannelAdapter sampleInboundChannelAdapter(
-            @Qualifier(EVENT_CHANNEL_SAMPLE_INPUT_MESSAGE_CHANNEL) MessageChannel messageChannel,
+            @Qualifier("sampleInputMessageChannel") MessageChannel messageChannel,
             PubSubTemplate pubSubTemplate) {
         PubSubInboundChannelAdapter adapter = new PubSubInboundChannelAdapter(pubSubTemplate, "SampleSubscription1");
         adapter.setOutputChannel(messageChannel);
@@ -25,6 +27,9 @@ public class PubSubEventConfiguration {
         return adapter;
     }
 
+    /**
+     * Create an input message channel for messages arriving from the subscription
+     */
     @Bean
     public MessageChannel sampleInputMessageChannel() {
         return new PublishSubscribeChannel();
