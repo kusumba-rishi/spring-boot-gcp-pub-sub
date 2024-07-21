@@ -16,11 +16,11 @@ public class EventMessageActivator {
      * message channel - sampleInputMessageChannel
      */
     @ServiceActivator(inputChannel = "sampleInputMessageChannel")
-    public void listenSampleEvents(String payload, @Header("gcp_pubsub_original_message")
-    BasicAcknowledgeablePubsubMessage message) {
-        log.info("message: {}", message);
-        log.info("payload: {}", payload);
+    public void listenSampleEvents(String payload, @Header("gcp_pubsub_original_message") BasicAcknowledgeablePubsubMessage message) {
+        log.info("MessageId: {} received on subscription: {}", message.getPubsubMessage().getMessageId(), message.getProjectSubscriptionName().getSubscription());
+        log.info("Message Payload: {}", payload);
         message.ack();
+        log.info("Acknowledged Message: {}", message.getPubsubMessage().getMessageId());
     }
 
 }
