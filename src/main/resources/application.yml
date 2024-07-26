@@ -9,6 +9,15 @@ spring:
         location: classpath:silicon-guru-430007-u7-6b7901c537bd.json # location of GCP SA credentials
       pubsub:
         enabled: true
+  datasource:
+    url: jdbc:mysql://localhost:3306/GCP_DEV
+    username: root
+    password: root
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  jpa:
+    hibernate:
+      ddl-auto: none
+    show-sql: true
 
 myEvents:
   movies:

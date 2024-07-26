@@ -30,10 +30,11 @@ public class MoviesEventMessageActivator {
         MovieMessagePayload movieMessagePayload = objectMapper.readValue(payload, MovieMessagePayload.class);
         log.info("MovieMessagePayload: {}", movieMessagePayload);
         try {
-            movieEventsService.processEvents(movieMessagePayload);
+            movieEventsService.processEvents(message.getPubsubMessage().getMessageId(), movieMessagePayload);
             log.info("Acknowledged Message: {}", message.getPubsubMessage().getMessageId());
             message.ack();
         } catch (Exception e) {
+            log.error("Processing failed for messageId: {} with exception: ", message.getPubsubMessage().getMessageId(), e);
             log.info("Negative Acknowledged Message: {}", message.getPubsubMessage().getMessageId());
             message.nack();
         }
