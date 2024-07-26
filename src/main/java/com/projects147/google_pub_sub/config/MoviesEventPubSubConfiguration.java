@@ -4,35 +4,35 @@ import com.google.cloud.spring.pubsub.core.PubSubTemplate;
 import com.google.cloud.spring.pubsub.integration.AckMode;
 import com.google.cloud.spring.pubsub.integration.inbound.PubSubInboundChannelAdapter;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.integration.channel.PublishSubscribeChannel;
 import org.springframework.messaging.MessageChannel;
 
-@Configuration
-public class PubSubEventConfiguration {
+import static com.projects147.google_pub_sub.constant.Constants.MOVIES_INPUT_MESSAGE_CHANNEL;
 
-    /**
-     * Create an inbound channel adapter to listen to the subscription
-     * and send the messages to message channel
-     */
+@Configuration
+public class MoviesEventPubSubConfiguration {
+
+    @Value("${myEvents.movies.subscription}")
+    private String moviesSubscription;
+
     @Bean
-    public PubSubInboundChannelAdapter sampleInboundChannelAdapter(
-            @Qualifier("sampleInputMessageChannel") MessageChannel messageChannel,
+    public PubSubInboundChannelAdapter moviesInboundChannelAdapter(
+            @Qualifier(MOVIES_INPUT_MESSAGE_CHANNEL) MessageChannel messageChannel,
             PubSubTemplate pubSubTemplate) {
-        PubSubInboundChannelAdapter adapter = new PubSubInboundChannelAdapter(pubSubTemplate, "SampleSubscription1");
+        PubSubInboundChannelAdapter adapter = new PubSubInboundChannelAdapter(pubSubTemplate, moviesSubscription);
         adapter.setOutputChannel(messageChannel);
         adapter.setAckMode(AckMode.MANUAL);
         adapter.setPayloadType(String.class);
         return adapter;
     }
 
-    /**
-     * Create an input message channel for messages arriving from the subscription
-     */
     @Bean
-    public MessageChannel sampleInputMessageChannel() {
+    public MessageChannel moviesInputMessageChannel() {
         return new PublishSubscribeChannel();
     }
+
 
 }

@@ -9,3 +9,8 @@ spring:
         location: classpath:silicon-guru-430007-u7-6b7901c537bd.json # location of GCP SA credentials
       pubsub:
         enabled: true
+
+myEvents:
+  movies:
+    topic: TOPIC_MOVIES
+    subscription: SUBSCRIPTION_MOVIES
